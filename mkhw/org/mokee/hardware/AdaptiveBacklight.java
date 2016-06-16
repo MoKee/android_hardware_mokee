@@ -17,11 +17,9 @@
 
 package org.mokee.hardware;
 
-import org.mokee.hardware.util.FileUtils;
+import org.mokee.internal.util.FileUtils;
 
 import android.util.Log;
-
-import java.io.File;
 
 /**
  * Adaptive backlight support (this refers to technologies like NVIDIA SmartDimmer,
@@ -46,13 +44,7 @@ public class AdaptiveBacklight {
             return true;
         }
 
-        final File f = new File(FILE_CABC);
-
-        if(f.exists()) {
-            return true;
-        } else {
-            return false;
-        }
+        return FileUtils.isFileWritable(FILE_CABC);
     }
 
     /**

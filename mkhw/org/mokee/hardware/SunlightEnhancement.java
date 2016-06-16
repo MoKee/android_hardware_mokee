@@ -17,11 +17,9 @@
 
 package org.mokee.hardware;
 
-import org.mokee.hardware.util.FileUtils;
+import org.mokee.internal.util.FileUtils;
 
 import android.util.Log;
-
-import java.io.File;
 
 /**
  * Facemelt mode!
@@ -45,13 +43,7 @@ public class SunlightEnhancement {
             return true;
         }
 
-        File f = new File(FILE_SRE);
-
-        if(f.exists()) {
-            return true;
-        } else {
-            return false;
-        }
+        return FileUtils.isFileWritable(FILE_SRE);
     }
 
     /**

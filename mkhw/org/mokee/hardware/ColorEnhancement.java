@@ -17,11 +17,9 @@
 
 package org.mokee.hardware;
 
-import org.mokee.hardware.util.FileUtils;
+import org.mokee.internal.util.FileUtils;
 
 import android.util.Log;
-
-import java.io.File;
 
 /**
  * Color enhancement support
@@ -38,13 +36,7 @@ public class ColorEnhancement {
      * @return boolean Supported devices must return always true
      */
     public static boolean isSupported() {
-        File f = new File(FILE_CE);
-        
-        if(f.exists()) {
-            return true;
-        } else {
-            return false;
-        } 
+        return FileUtils.isFileWritable(FILE_CE);
     }
 
     /**
