@@ -17,6 +17,8 @@
 
 package org.mokee.hardware;
 
+import android.util.Log;
+
 import org.mokee.internal.util.FileUtils;
 
 /**
@@ -24,9 +26,15 @@ import org.mokee.internal.util.FileUtils;
  * hardware serial numbers.
  */
 public class UniqueDeviceId {
+
+    private static final String TAG = "UniqueDeviceId";
+
     private static final int TYPE_MMC0_CID = 0;
 
     private static String sUniqueId = null;
+
+    private static final String MMC_TYPE = "/sys/block/mmcblk0/device/type";
+    private static final String MMC_CID  = "/sys/block/mmcblk0/device/cid";
 
     /**
      * Whether device supports reporting a unique device id.
@@ -34,7 +42,9 @@ public class UniqueDeviceId {
      * @return boolean Supported devices must return always true
      */
     public static boolean isSupported() {
-        return getUniqueDeviceIdInternal() != null;
+        return FileUtils.isFileReadable(MMC_TYPE) &&
+               FileUtils.isFileReadable(MMC_CID) &&
+               getUniqueDeviceIdInternal() != null;
     }
 
     /**
@@ -51,14 +61,19 @@ public class UniqueDeviceId {
             return sUniqueId;
         }
 
-        String sMmcType = FileUtils.readOneLine("/sys/block/mmcblk0/device/type");
-        String sCid = FileUtils.readOneLine("/sys/block/mmcblk0/device/cid");
-        if ("MMC".equals(sMmcType) && sCid != null) {
-            sCid = sCid.trim();
-            if (sCid.length() == 32) {
-                sUniqueId = String.format("%03x00000%32s", TYPE_MMC0_CID, sCid);
-                return sUniqueId;
+        try {
+            String sMmcType = FileUtils.readOneLine(MMC_TYPE);
+            String sCid = FileUtils.readOneLine(MMC_CID);
+            if ("MMC".equals(sMmcType) && sCid != null) {
+                sCid = sCid.trim();
+                if (sCid.length() == 32) {
+                    sUniqueId = String.format("%03x00000%32s", TYPE_MMC0_CID, sCid);
+                    return sUniqueId;
+                }
             }
+        } catch (Exception e) {
+            Log.e(TAG, "Failed to get unique device ID: " + e.getMessage());
+            return null;
         }
 
         /* Any additional types should be added here. */
