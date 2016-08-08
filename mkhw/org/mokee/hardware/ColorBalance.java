@@ -72,7 +72,7 @@ public class ColorBalance {
      */
     public static int getMinValue() {
         if (sHasNativeSupport) {
-            return LiveDisplayVendorImpl.native_getColorBalanceMin();
+            return LiveDisplayVendorImpl.native_getColorBalanceRange().getLower();
         }
         return 0;
     }
@@ -83,7 +83,7 @@ public class ColorBalance {
      */
     public static int getMaxValue() {
         if (sHasNativeSupport) {
-            return LiveDisplayVendorImpl.native_getColorBalanceMax();
+            return LiveDisplayVendorImpl.native_getColorBalanceRange().getUpper();
         }
         return 0;
     }
