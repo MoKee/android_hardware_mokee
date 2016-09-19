@@ -33,7 +33,7 @@ include $(BUILD_STATIC_LIBRARY)
 
 include $(CLEAR_VARS)
 LOCAL_SRC_FILES	:= \
-    jni/org_cyanogenmod_hardware_LiveDisplayVendorImpl.cpp
+    jni/org_mokee_hardware_LiveDisplayVendorImpl.cpp
 
 LOCAL_C_INCLUDES := $(common_C_INCLUDES)
 
