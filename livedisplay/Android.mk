@@ -1,5 +1,5 @@
-LIVEDISPLAY_TARGETS := msm8916 msm8939 msm8974 msm8992 msm8994
-LIVEDISPLAY_TARGETS += msm8996 msm8937 msm8953 msm8976
+LIVEDISPLAY_TARGETS := msm8916 msm8974 msm8992 msm8994
+LIVEDISPLAY_TARGETS += msm8996 msm8937 msm8953 msm8952
 
 ifeq ($(call is-board-platform-in-list, $(LIVEDISPLAY_TARGETS)),true)
 
@@ -27,6 +27,10 @@ LOCAL_SRC_FILES := \
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE := liblivedisplay
 LOCAL_CFLAGS := -std=c++11
+
+ifeq ($(TARGET_USES_SDM), true)
+LOCAL_CFLAGS += -DTARGET_USES_SDM
+endif
 
 include $(BUILD_STATIC_LIBRARY)
 
